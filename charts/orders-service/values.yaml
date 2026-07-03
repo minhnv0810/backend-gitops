@@ -5,7 +5,7 @@ image:
 service:
   port: 3003
 env:
-  NODE_ENV: production
+  NODE_ENV: staging
   RABBITMQ_EXCHANGE: domain.events
   PRODUCT_SERVICE_URL: http://product-service:3002
   PRODUCT_SERVICE_TIMEOUT_MS: "3000"

@@ -5,7 +5,7 @@ image:
 service:
   port: 3002
 env:
-  NODE_ENV: production
+  NODE_ENV: staging
   RABBITMQ_EXCHANGE: domain.events
   JWT_AUDIENCE: ecommerce-api
   JWT_ISSUER: auth-service
