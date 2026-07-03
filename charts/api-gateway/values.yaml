@@ -1,7 +1,7 @@
 nameOverride: api-gateway
 
 image:
-  repository: "<dockerhub-user>/api-gateway"
+  repository: "minh4862/api-gateway"
   tag: "latest"
 
 service:

@@ -1,7 +1,7 @@
 nameOverride: auth-service
 
 image:
-  repository: "<dockerhub-user>/auth-service"
+  repository: "minh4862/auth-service"
   tag: "latest"
 
 service:

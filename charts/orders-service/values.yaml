@@ -1,7 +1,7 @@
 nameOverride: orders-service
 
 image:
-  repository: "<dockerhub-user>/orders-service"
+  repository: "minh4862/orders-service"
   tag: "latest"
 
 service:

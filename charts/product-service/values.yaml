@@ -1,7 +1,7 @@
 nameOverride: product-service
 
 image:
-  repository: "<dockerhub-user>/product-service"
+  repository: "minh4862/product-service"
   tag: "latest"
 
 service:
