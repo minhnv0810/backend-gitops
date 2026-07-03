@@ -1,13 +1,7 @@
 namespace: backend
 
-postgresql:
-  auth:
-    # Secret created manually (scripts/create-secrets.sh), key: postgres-password
-    existingSecret: postgres-secrets
-    secretKeys:
-      adminPasswordKey: postgres-password
-  primary:
-    initdb:
-      scriptsConfigMap: postgres-initdb
-    persistence:
-      size: 2Gi
+# Same image as backend/docker-compose.yml — no third-party chart, no
+# dependency on any registry's tag-retention policy but Docker Hub's official image.
+image: postgres:16-alpine
+
+storage: 2Gi

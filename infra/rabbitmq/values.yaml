@@ -1,10 +1,6 @@
 namespace: backend
 
-rabbitmq:
-  auth:
-    username: rabbit
-    # Secret created manually (scripts/create-secrets.sh), key: rabbitmq-password
-    existingPasswordSecret: rabbitmq-secrets
-    existingSecretPasswordKey: rabbitmq-password
-  persistence:
-    size: 1Gi
+# Same image as backend/docker-compose.yml.
+image: rabbitmq:3.13-management-alpine
+
+storage: 1Gi

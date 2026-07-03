@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/<github-user>/backend-gitops.git
+    repoURL: https://github.com/minhnv0810/backend-gitops.git
     targetRevision: main
     path: infra/postgres
     helm:

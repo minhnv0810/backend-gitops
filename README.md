@@ -8,8 +8,12 @@ by hand except the one-time bootstrap steps below.
 - `charts/service/` — one generic Helm chart reused by all 4 Node services.
 - `charts/<service>/values.yaml` — per-service overrides (image, port, env, ingress). Not a chart
   itself; applied against `charts/service` via ArgoCD's multi-source `$values` reference.
-- `infra/postgres`, `infra/rabbitmq`, `infra/ingress-nginx` — thin wrapper charts around the
-  upstream Bitnami / ingress-nginx charts.
+- `infra/postgres`, `infra/rabbitmq` — self-authored StatefulSet + PVC charts, same images as
+  `backend/docker-compose.yml` (`postgres:16-alpine`, `rabbitmq:3.13-management-alpine`). Not
+  Bitnami-based on purpose — Bitnami's Docker Hub retention policy stopped serving pinned
+  historical tags in 2025, breaking any chart pinned to a specific `bitnami/*` tag.
+- `infra/ingress-nginx` — thin wrapper chart around the upstream ingress-nginx project chart
+  (unaffected by the Bitnami issue — different maintainer, different registry).
 - `argocd/root-app.yaml` — app-of-apps root; apply this once, it manages everything else.
 - `argocd/apps/*.yaml` — one ArgoCD `Application` per service + per infra component.
 - `kind/kind-config.yaml` — local cluster definition (ingress-ready node, hostPort 80/443).
@@ -31,8 +35,8 @@ kind create cluster --config kind/kind-config.yaml --name backend
 ./scripts/create-secrets.sh
 
 # 3. Manual bring-up first (validates the charts before ArgoCD enters the picture)
-helm dependency build infra/postgres && helm install postgres infra/postgres -n backend --create-namespace
-helm dependency build infra/rabbitmq && helm install rabbitmq infra/rabbitmq -n backend
+helm install postgres infra/postgres -n backend --create-namespace
+helm install rabbitmq infra/rabbitmq -n backend
 helm dependency build infra/ingress-nginx && helm install ingress-nginx infra/ingress-nginx -n ingress-nginx --create-namespace
 helm install api-gateway charts/service -n backend -f charts/api-gateway/values.yaml
 helm install auth-service charts/service -n backend -f charts/auth-service/values.yaml
@@ -51,11 +55,9 @@ kubectl apply -f argocd/root-app.yaml
 
 ## Notes
 
-- Postgres's in-cluster service name is `postgres-postgresql` (Bitnami chart doesn't collapse the
-  release name), RabbitMQ's is just `rabbitmq` (it does). `scripts/create-secrets.sh` already
-  accounts for this when building `DATABASE_URL`/`RABBITMQ_URL`.
-- All charts here were `helm lint`ed and `helm template`d successfully, including dependency builds
-  against the live Bitnami/ingress-nginx chart repos.
+- Postgres and RabbitMQ's in-cluster service names are `postgres` / `rabbitmq` in the `backend`
+  namespace — `scripts/create-secrets.sh` builds `DATABASE_URL`/`RABBITMQ_URL` from those.
+- All charts here were `helm lint`ed and `helm template`d successfully.
 
 ## Image tags
 

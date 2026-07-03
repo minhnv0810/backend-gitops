@@ -24,9 +24,7 @@ kubectl create secret generic rabbitmq-secrets -n "$NAMESPACE" \
   --from-literal=rabbitmq-password="$RABBITMQ_PASSWORD" \
   --dry-run=client -o yaml | kubectl apply -f -
 
-# Bitnami chart service names: postgresql chart doesn't collapse the release
-# name (helm release "postgres" -> service "postgres-postgresql"), rabbitmq does.
-DATABASE_HOST="postgres-postgresql.${NAMESPACE}.svc.cluster.local"
+DATABASE_HOST="postgres.${NAMESPACE}.svc.cluster.local"
 RABBITMQ_URL="amqp://rabbit:${RABBITMQ_PASSWORD}@rabbitmq.${NAMESPACE}.svc.cluster.local:5672"
 
 # ── JWT RS256 keypair (generated once, cached locally, never committed) ─
