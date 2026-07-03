@@ -2,7 +2,7 @@ nameOverride: auth-service
 
 image:
   repository: "minh4862/auth-service"
-  tag: "latest"
+  tag: "local"
 
 service:
   port: 3001

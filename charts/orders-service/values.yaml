@@ -2,7 +2,7 @@ nameOverride: orders-service
 
 image:
   repository: "minh4862/orders-service"
-  tag: "latest"
+  tag: "local"
 
 service:
   port: 3003

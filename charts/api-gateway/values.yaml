@@ -2,7 +2,7 @@ nameOverride: api-gateway
 
 image:
   repository: "minh4862/api-gateway"
-  tag: "latest"
+  tag: "local"
 
 service:
   port: 3000

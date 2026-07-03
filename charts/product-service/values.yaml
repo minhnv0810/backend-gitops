@@ -2,7 +2,7 @@ nameOverride: product-service
 
 image:
   repository: "minh4862/product-service"
-  tag: "latest"
+  tag: "local"
 
 service:
   port: 3002
