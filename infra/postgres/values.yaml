@@ -1,0 +1,13 @@
+namespace: backend
+
+postgresql:
+  auth:
+    # Secret created manually (scripts/create-secrets.sh), key: postgres-password
+    existingSecret: postgres-secrets
+    secretKeys:
+      adminPasswordKey: postgres-password
+  primary:
+    initdb:
+      scriptsConfigMap: postgres-initdb
+    persistence:
+      size: 2Gi

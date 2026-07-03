@@ -1,0 +1,56 @@
+# Defaults shared by every service. Each app under charts/<service>/values.yaml
+# overrides image, service.port, env, ingress, networkPolicy as needed.
+
+nameOverride: ""
+namespace: backend
+
+replicaCount: 1
+
+image:
+  repository: ""
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+service:
+  port: 3000
+
+# Plain (non-secret) env vars -> ConfigMap
+env: {}
+
+# Names of pre-existing Secret objects (created out-of-band, see scripts/create-secrets.sh)
+# mounted wholesale via envFrom.
+envSecretRefs: []
+
+probes:
+  livePath: /health/live
+  readyPath: /health/ready
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  failureThreshold: 3
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+ingress:
+  enabled: false
+  className: nginx
+  host: ""
+  path: /
+
+# Only api-gateway sets allowExternal: true. Every other service defaults to
+# accepting inbound only from pods labeled app.kubernetes.io/name: api-gateway
+# in the same namespace, per docs/01-architecture/09-security.md.
+networkPolicy:
+  enabled: true
+  allowExternal: false
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 70

@@ -1,0 +1,10 @@
+namespace: backend
+
+rabbitmq:
+  auth:
+    username: rabbit
+    # Secret created manually (scripts/create-secrets.sh), key: rabbitmq-password
+    existingPasswordSecret: rabbitmq-secrets
+    existingSecretPasswordKey: rabbitmq-password
+  persistence:
+    size: 1Gi

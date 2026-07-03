@@ -1,0 +1,25 @@
+# App-of-apps root. Apply once by hand after installing ArgoCD:
+#   kubectl apply -f argocd/root-app.yaml
+# ArgoCD then reconciles everything under argocd/apps/ itself.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: root-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/<github-user>/backend-gitops.git
+    targetRevision: main
+    path: argocd/apps
+    directory:
+      recurse: false
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

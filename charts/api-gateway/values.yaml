@@ -1,0 +1,36 @@
+nameOverride: api-gateway
+
+image:
+  repository: "<dockerhub-user>/api-gateway"
+  tag: "latest"
+
+service:
+  port: 3000
+
+env:
+  NODE_ENV: production
+  JWT_AUDIENCE: ecommerce-api
+  JWT_ISSUER: auth-service
+  AUTH_SERVICE_URL: http://auth-service:3001
+  PRODUCT_SERVICE_URL: http://product-service:3002
+  ORDERS_SERVICE_URL: http://orders-service:3003
+  UPSTREAM_TIMEOUT_MS: "10000"
+  CORS_ORIGINS: http://localhost:4200
+  THROTTLE_GLOBAL_LIMIT: "100"
+  THROTTLE_GLOBAL_TTL_MS: "60000"
+  THROTTLE_AUTH_LIMIT: "10"
+  THROTTLE_AUTH_TTL_MS: "60000"
+  LOG_LEVEL: info
+
+envSecretRefs:
+  - api-gateway-secrets # JWT_PUBLIC_KEY
+
+ingress:
+  enabled: true
+  className: nginx
+  host: api.local.test
+  path: /
+
+networkPolicy:
+  enabled: true
+  allowExternal: true

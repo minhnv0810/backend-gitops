@@ -1,0 +1,18 @@
+# Matches the kind project's documented ingress-nginx setup:
+# https://kind.sigs.k8s.io/docs/user/ingress/
+# Requires the kind cluster node labeled ingress-ready=true and
+# extraPortMappings for 80/443 (see kind/kind-config.yaml).
+ingress-nginx:
+  controller:
+    hostPort:
+      enabled: true
+    service:
+      type: ClusterIP
+    nodeSelector:
+      ingress-ready: "true"
+    tolerations:
+      - key: node-role.kubernetes.io/control-plane
+        operator: Equal
+        effect: NoSchedule
+    publishService:
+      enabled: false

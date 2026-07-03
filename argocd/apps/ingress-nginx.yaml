@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ingress-nginx
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/<github-user>/backend-gitops.git
+    targetRevision: main
+    path: infra/ingress-nginx
+    helm:
+      valueFiles:
+        - values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    # Matches the namespaceSelector (kubernetes.io/metadata.name: ingress-nginx)
+    # used by the api-gateway NetworkPolicy.
+    namespace: ingress-nginx
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

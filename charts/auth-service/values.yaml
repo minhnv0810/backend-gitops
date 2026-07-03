@@ -1,0 +1,24 @@
+nameOverride: auth-service
+
+image:
+  repository: "<dockerhub-user>/auth-service"
+  tag: "latest"
+
+service:
+  port: 3001
+
+env:
+  NODE_ENV: production
+  RABBITMQ_EXCHANGE: domain.events
+  JWT_ACCESS_TOKEN_TTL: "900"
+  JWT_REFRESH_TOKEN_TTL: "604800"
+  JWT_AUDIENCE: ecommerce-api
+  JWT_ISSUER: auth-service
+  LOG_LEVEL: info
+
+envSecretRefs:
+  - auth-service-secrets # DATABASE_URL, RABBITMQ_URL, JWT_PRIVATE_KEY, JWT_PUBLIC_KEY
+
+networkPolicy:
+  enabled: true
+  allowExternal: false

@@ -1,0 +1,4 @@
+.secrets/
+charts/*/charts/
+infra/*/charts/
+*.tgz

@@ -1,0 +1,22 @@
+nameOverride: product-service
+
+image:
+  repository: "<dockerhub-user>/product-service"
+  tag: "latest"
+
+service:
+  port: 3002
+
+env:
+  NODE_ENV: production
+  RABBITMQ_EXCHANGE: domain.events
+  JWT_AUDIENCE: ecommerce-api
+  JWT_ISSUER: auth-service
+  LOG_LEVEL: info
+
+envSecretRefs:
+  - product-service-secrets # DATABASE_URL, RABBITMQ_URL, JWT_PUBLIC_KEY
+
+networkPolicy:
+  enabled: true
+  allowExternal: false
