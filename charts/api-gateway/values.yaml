@@ -1,12 +1,9 @@
 nameOverride: api-gateway
-
 image:
   repository: "minh4862/api-gateway"
-  tag: "local"
-
+  tag: "sha-682097a"
 service:
   port: 3000
-
 env:
   NODE_ENV: production
   JWT_AUDIENCE: ecommerce-api
@@ -21,16 +18,13 @@ env:
   THROTTLE_AUTH_LIMIT: "10"
   THROTTLE_AUTH_TTL_MS: "60000"
   LOG_LEVEL: info
-
 envSecretRefs:
   - api-gateway-secrets # JWT_PUBLIC_KEY
-
 ingress:
   enabled: true
   className: nginx
   host: api.local.test
   path: /
-
 networkPolicy:
   enabled: true
   allowExternal: true
